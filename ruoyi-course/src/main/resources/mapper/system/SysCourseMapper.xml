@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCourseMapper">
+    
+    <resultMap type="SysCourse" id="SysCourseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+    <sql id="selectSysCourseVo">
+        select id, name, description, price from sys_course
+    </sql>
+
+    <select id="selectSysCourseList" parameterType="SysCourse" resultMap="SysCourseResult">
+        <include refid="selectSysCourseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="price != null "> and price = #{price}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCourseById" parameterType="Long" resultMap="SysCourseResult">
+        <include refid="selectSysCourseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysCourse" parameterType="SysCourse" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="price != null">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="price != null">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCourse" parameterType="SysCourse">
+        update sys_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="price != null">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCourseById" parameterType="Long">
+        delete from sys_course where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCourseByIds" parameterType="String">
+        delete from sys_course where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
