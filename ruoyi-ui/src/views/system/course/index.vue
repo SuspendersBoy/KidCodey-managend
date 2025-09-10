@@ -1,18 +1,58 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="课程名" prop="name">
+      <el-form-item label="课程名字" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入课程名"
+          placeholder="请输入课程名字"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="课程价格" prop="price">
+      <el-form-item label="价格" prop="price">
         <el-input
           v-model="queryParams.price"
-          placeholder="请输入课程价格"
+          placeholder="请输入价格"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="课程简介" prop="about">
+        <el-input
+          v-model="queryParams.about"
+          placeholder="请输入课程简介"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="课节" prop="lesson">
+        <el-input
+          v-model="queryParams.lesson"
+          placeholder="请输入课节"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="课时" prop="duration">
+        <el-input
+          v-model="queryParams.duration"
+          placeholder="请输入课时"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="最大学生数" prop="maxStudents">
+        <el-input
+          v-model="queryParams.maxStudents"
+          placeholder="请输入最大学生数"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="课程教师" prop="teacher">
+        <el-input
+          v-model="queryParams.teacher"
+          placeholder="请输入课程教师"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -72,9 +112,14 @@
     <el-table v-loading="loading" :data="courseList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="课程id" align="center" prop="id" />
-      <el-table-column label="课程名" align="center" prop="name" />
-      <el-table-column label="课程描述" align="center" prop="description" />
-      <el-table-column label="课程价格" align="center" prop="price" />
+      <el-table-column label="课程名字" align="center" prop="name" />
+      <el-table-column label="价格" align="center" prop="price" />
+      <el-table-column label="课程简介" align="center" prop="about" />
+      <el-table-column label="课程详情" align="center" prop="discroption" />
+      <el-table-column label="课节" align="center" prop="lesson" />
+      <el-table-column label="课时" align="center" prop="duration" />
+      <el-table-column label="最大学生数" align="center" prop="maxStudents" />
+      <el-table-column label="课程教师" align="center" prop="teacher" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -106,14 +151,29 @@
     <!-- 添加或修改课程对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="课程名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入课程名" />
+        <el-form-item label="课程名字" prop="name">
+          <el-input v-model="form.name" placeholder="请输入课程名字" />
         </el-form-item>
-        <el-form-item label="课程描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="form.price" placeholder="请输入价格" />
         </el-form-item>
-        <el-form-item label="课程价格" prop="price">
-          <el-input v-model="form.price" placeholder="请输入课程价格" />
+        <el-form-item label="课程简介" prop="about">
+          <el-input v-model="form.about" placeholder="请输入课程简介" />
+        </el-form-item>
+        <el-form-item label="课程详情" prop="discroption">
+          <el-input v-model="form.discroption" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+        <el-form-item label="课节" prop="lesson">
+          <el-input v-model="form.lesson" placeholder="请输入课节" />
+        </el-form-item>
+        <el-form-item label="课时" prop="duration">
+          <el-input v-model="form.duration" placeholder="请输入课时" />
+        </el-form-item>
+        <el-form-item label="最大学生数" prop="maxStudents">
+          <el-input v-model="form.maxStudents" placeholder="请输入最大学生数" />
+        </el-form-item>
+        <el-form-item label="课程教师" prop="teacher">
+          <el-input v-model="form.teacher" placeholder="请输入课程教师" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -154,13 +214,42 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        description: null,
-        price: null
+        price: null,
+        about: null,
+        discroption: null,
+        lesson: null,
+        duration: null,
+        maxStudents: null,
+        teacher: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        name: [
+          { required: true, message: "课程名字不能为空", trigger: "blur" }
+        ],
+        price: [
+          { required: true, message: "价格不能为空", trigger: "blur" }
+        ],
+        about: [
+          { required: true, message: "课程简介不能为空", trigger: "blur" }
+        ],
+        discroption: [
+          { required: true, message: "课程详情不能为空", trigger: "blur" }
+        ],
+        lesson: [
+          { required: true, message: "课节不能为空", trigger: "blur" }
+        ],
+        duration: [
+          { required: true, message: "课时不能为空", trigger: "blur" }
+        ],
+        maxStudents: [
+          { required: true, message: "最大学生数不能为空", trigger: "blur" }
+        ],
+        teacher: [
+          { required: true, message: "课程教师不能为空", trigger: "blur" }
+        ]
       }
     }
   },
@@ -187,8 +276,13 @@ export default {
       this.form = {
         id: null,
         name: null,
-        description: null,
-        price: null
+        price: null,
+        about: null,
+        discroption: null,
+        lesson: null,
+        duration: null,
+        maxStudents: null,
+        teacher: null
       }
       this.resetForm("form")
     },

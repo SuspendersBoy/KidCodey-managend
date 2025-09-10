@@ -7,20 +7,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SysCourse" id="SysCourseResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
-        <result property="description"    column="description"    />
         <result property="price"    column="price"    />
+        <result property="about"    column="about"    />
+        <result property="discroption"    column="discroption"    />
+        <result property="lesson"    column="lesson"    />
+        <result property="duration"    column="duration"    />
+        <result property="maxStudents"    column="max_students"    />
+        <result property="teacher"    column="teacher"    />
     </resultMap>
 
     <sql id="selectSysCourseVo">
-        select id, name, description, price from sys_course
+        select id, name, price, about, discroption, lesson, duration, max_students, teacher from sys_course
     </sql>
 
     <select id="selectSysCourseList" parameterType="SysCourse" resultMap="SysCourseResult">
         <include refid="selectSysCourseVo"/>
         <where>  
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="price != null "> and price = #{price}</if>
+            <if test="about != null  and about != ''"> and about = #{about}</if>
+            <if test="discroption != null  and discroption != ''"> and discroption = #{discroption}</if>
+            <if test="lesson != null "> and lesson = #{lesson}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="maxStudents != null  and maxStudents != ''"> and max_students = #{maxStudents}</if>
+            <if test="teacher != null  and teacher != ''"> and teacher = #{teacher}</if>
         </where>
     </select>
     
@@ -32,23 +42,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSysCourse" parameterType="SysCourse" useGeneratedKeys="true" keyProperty="id">
         insert into sys_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">name,</if>
-            <if test="description != null">description,</if>
+            <if test="name != null and name != ''">name,</if>
             <if test="price != null">price,</if>
+            <if test="about != null and about != ''">about,</if>
+            <if test="discroption != null and discroption != ''">discroption,</if>
+            <if test="lesson != null">lesson,</if>
+            <if test="duration != null">duration,</if>
+            <if test="maxStudents != null and maxStudents != ''">max_students,</if>
+            <if test="teacher != null and teacher != ''">teacher,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="name != null">#{name},</if>
-            <if test="description != null">#{description},</if>
+            <if test="name != null and name != ''">#{name},</if>
             <if test="price != null">#{price},</if>
+            <if test="about != null and about != ''">#{about},</if>
+            <if test="discroption != null and discroption != ''">#{discroption},</if>
+            <if test="lesson != null">#{lesson},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="maxStudents != null and maxStudents != ''">#{maxStudents},</if>
+            <if test="teacher != null and teacher != ''">#{teacher},</if>
          </trim>
     </insert>
 
     <update id="updateSysCourse" parameterType="SysCourse">
         update sys_course
         <trim prefix="SET" suffixOverrides=",">
-            <if test="name != null">name = #{name},</if>
-            <if test="description != null">description = #{description},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
             <if test="price != null">price = #{price},</if>
+            <if test="about != null and about != ''">about = #{about},</if>
+            <if test="discroption != null and discroption != ''">discroption = #{discroption},</if>
+            <if test="lesson != null">lesson = #{lesson},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="maxStudents != null and maxStudents != ''">max_students = #{maxStudents},</if>
+            <if test="teacher != null and teacher != ''">teacher = #{teacher},</if>
         </trim>
         where id = #{id}
     </update>

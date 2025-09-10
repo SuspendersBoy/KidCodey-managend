@@ -11,7 +11,7 @@ import com.ruoyi.system.service.ISysCourseService;
  * 课程Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-09-06
+ * @date 2025-09-10
  */
 @Service
 public class SysCourseServiceImpl implements ISysCourseService 

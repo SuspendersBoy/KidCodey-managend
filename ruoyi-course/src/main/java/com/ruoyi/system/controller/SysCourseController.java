@@ -25,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 课程Controller
  * 
  * @author ruoyi
- * @date 2025-09-06
+ * @date 2025-09-10
  */
 @RestController
 @RequestMapping("/system/course")
@@ -37,7 +37,6 @@ public class SysCourseController extends BaseController
     /**
      * 查询课程列表
      */
-    @PreAuthorize("@ss.hasPermi('system:course:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysCourse sysCourse)
     {
